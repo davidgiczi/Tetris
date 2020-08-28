@@ -53,24 +53,16 @@ public class TetrisGame {
                         initGame();
                         break;
                     case ArrowLeft:
-                        timer.stop();
                         stepShapeLeft();
-                        timer.start();
                         break;
                     case ArrowRight:
-                        timer.stop();
                         stepShapeRight();
-                        timer.start();
                         break;
                     case ArrowDown:
-                        timer.stop();
                         stepShapeDown();
-                        timer.start();
                         break;
                     case ArrowUp:
-                        timer.stop();
                         rotateShape();
-                        timer.start();
                         break;
                     case PageUp:
                         increaseLevel();
@@ -120,7 +112,7 @@ public class TetrisGame {
         board.displayNumberShape(level);
     }
 
-    private void stepShapeLeft() throws IOException {
+    private synchronized void stepShapeLeft() throws IOException {
 
         if (logic.canShapeBeMovedToLeft(actualShape) && isGamePlayed) {
             List<ShapePosition> deletedPosition = actualShape.moveToLeft();
@@ -128,11 +120,12 @@ public class TetrisGame {
             logic.moveLogicShape(actualShape);
             board.clearScreen(deletedPosition);
             board.displayShape(actualShape);
+           
         }
 
     }
 
-    private void stepShapeRight() throws IOException {
+    private synchronized void stepShapeRight() throws IOException {
 
         if (logic.canShapeBeMovedToRight(actualShape) && isGamePlayed) {
             List<ShapePosition> deletedPosition = actualShape.moveToRight();
@@ -144,7 +137,7 @@ public class TetrisGame {
 
     }
 
-    private void stepShapeDown() throws IOException {
+    private synchronized void stepShapeDown() throws IOException {
 
         if (logic.canShapeBeMovedToDown(actualShape) && isGamePlayed) {
             List<ShapePosition> deletedPosition = actualShape.moveToDown();
@@ -156,7 +149,7 @@ public class TetrisGame {
 
     }
 
-    private void rotateShape() throws IOException {
+    private synchronized void rotateShape() throws IOException {
 
         if (logic.canShapeBeRotated(actualShape) && isGamePlayed) {
             List<ShapePosition> deletedPosition = actualShape.rotateShape();
