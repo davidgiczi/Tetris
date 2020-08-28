@@ -1626,7 +1626,7 @@ public class GameLogic {
     public boolean isTheEndOfTheGame() {
 
         for (int i = 0; i < Displayer.WIDTH_OF_BOARD; i++) {
-            if (logicBoard.get(Displayer.WIDTH_OF_BOARD + i)) {
+            if (logicBoard.get(i)) {
                 return true;
             }
         }
