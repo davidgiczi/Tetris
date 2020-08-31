@@ -87,11 +87,11 @@ public class Displayer {
         screen.refresh();
     }
 
-    public void displayGameOver() throws IOException {
+    public void displayGameOver(int x, int y) throws IOException {
 
         tg.setForegroundColor(TextColor.ANSI.RED);
 
-        tg.putString(27, 1, "Vége a játéknak!".toUpperCase(), SGR.BOLD, SGR.BLINK);
+        tg.putString(x, y, "Vége a játéknak!".toUpperCase(), SGR.BOLD, SGR.BLINK);
 
         screen.refresh();
 
