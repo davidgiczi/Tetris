@@ -25,7 +25,7 @@ public class TetrisGame {
     private NumberShape score;
     private NumberShape level;
     private final Timer timer = new Timer(1000, new Play(this));
-    private boolean isGamePlayed = false;
+   
 
     public TetrisGame() throws IOException {
 
@@ -102,7 +102,6 @@ public class TetrisGame {
         logic.addShapeToStore(actualShape);
         timer.setDelay(logic.getDelay());
         timer.start();
-        isGamePlayed = true;
     }
 
     private void displayLevel() throws IOException {
@@ -114,7 +113,7 @@ public class TetrisGame {
 
     private synchronized void stepShapeLeft() throws IOException {
 
-        if (logic.canShapeBeMovedToLeft(actualShape) && isGamePlayed) {
+        if (logic.canShapeBeMovedToLeft(actualShape) && timer.isRunning()) {
             List<ShapePosition> deletedPosition = actualShape.moveToLeft();
             logic.clearLogicBoard(deletedPosition);
             logic.moveLogicShape(actualShape);
@@ -127,7 +126,7 @@ public class TetrisGame {
 
     private synchronized void stepShapeRight() throws IOException {
 
-        if (logic.canShapeBeMovedToRight(actualShape) && isGamePlayed) {
+        if (logic.canShapeBeMovedToRight(actualShape) && timer.isRunning()) {
             List<ShapePosition> deletedPosition = actualShape.moveToRight();
             logic.clearLogicBoard(deletedPosition);
             logic.moveLogicShape(actualShape);
@@ -139,7 +138,7 @@ public class TetrisGame {
 
     private synchronized void stepShapeDown() throws IOException {
 
-        if (logic.canShapeBeMovedToDown(actualShape) && isGamePlayed) {
+        if (logic.canShapeBeMovedToDown(actualShape) && timer.isRunning()) {
             List<ShapePosition> deletedPosition = actualShape.moveToDown();
             logic.clearLogicBoard(deletedPosition);
             logic.moveLogicShape(actualShape);
@@ -151,7 +150,7 @@ public class TetrisGame {
 
     private synchronized void rotateShape() throws IOException {
 
-        if (logic.canShapeBeRotated(actualShape) && isGamePlayed) {
+        if (logic.canShapeBeRotated(actualShape) && timer.isRunning()) {
             List<ShapePosition> deletedPosition = actualShape.rotateShape();
             logic.clearLogicBoard(deletedPosition);
             logic.moveLogicShape(actualShape);
@@ -208,15 +207,15 @@ public class TetrisGame {
                 logic.addShapeToStore(nextShape);
                 board.clearScreen(nextShape.shapeComponent);
                 actualShape.addShapeToGameBoard();
+                logic.addShapeToLogicBoard(actualShape);
                 board.displayShape(actualShape);
-                nextShape = ShapeFactory.getShape();
+                nextShape = ShapeFactory.getShape();                                            
                 board.displayShape(nextShape);
                 
             } else {
 
                 timer.stop();
-                isGamePlayed = false;
-                board.displayGameOver();
+                board.displayGameOver(27, 1);
             }
           
         }
@@ -261,17 +260,16 @@ public class TetrisGame {
         }
 
     }
-    
+                            
     private void stopGame(){
         
-        if(isGamePlayed){
+        if(timer.isRunning()){
             timer.stop();
         }
         else{
             timer.start();
         }
         
-        isGamePlayed = !isGamePlayed;
     }
 
 }
