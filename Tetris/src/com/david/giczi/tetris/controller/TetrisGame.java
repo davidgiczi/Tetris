@@ -104,7 +104,7 @@ public class TetrisGame {
         timer.start();
     }
 
-    private void displayLevel() throws IOException {
+    private synchronized void displayLevel() throws IOException {
         board.clearScreen(level.shapeComponent);
         level = new NumberShape(logic.getLevel() + 1,
                 new ShapePosition(10, 17));
@@ -175,13 +175,6 @@ public class TetrisGame {
         displayLevel();
     }
 
-    private void increaseLevelValueByScoreValue() throws IOException {
-
-        logic.increaseLevelValueByScoreValue();
-        timer.setDelay(logic.getDelay());
-        displayLevel();
-    }
-
     public void play() throws IOException {
 
         if (logic.canShapeBeMovedToDown(actualShape)) {
@@ -222,6 +215,13 @@ public class TetrisGame {
 
     }
 
+    private void increaseLevelValueByScoreValue() throws IOException {
+
+        logic.increaseLevelValueByScoreValue();
+        timer.setDelay(logic.getDelay());
+        displayLevel();
+    }
+    
     private void displayScore() throws IOException {
         logic.calcScore(actualShape);
         board.clearScreen(score.shapeComponent);
